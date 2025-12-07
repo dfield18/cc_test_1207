@@ -1,21 +1,24 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { Sparkles, CreditCard } from 'lucide-react';
+import ChatbaseChat from '@/components/ChatbaseChat';
 
 export default function Home() {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  // Add suggested questions as URL parameters
+  const suggestedQuestions = [
+    "What's the best card for travel?",
+    "How can I earn cash back on everyday purchases?",
+    "Show the best cards with no annual fee",
+    "Recommend luxury travel credit cards",
+    "What are the best cards for beginners?",
+    "Which cards offer the best welcome bonuses?"
+  ];
 
   const handleQuestionClick = (question: string) => {
-    // Send message to Chatbase iframe to populate the input
-    if (iframeRef.current && iframeRef.current.contentWindow) {
-      iframeRef.current.contentWindow.postMessage(
-        {
-          type: 'chatbase-send-message',
-          message: question
-        },
-        'https://www.chatbase.co'
-      );
+    // Call the sendMessage function exposed by the chat component
+    if ((window as any).sendChatbaseMessage) {
+      (window as any).sendChatbaseMessage(question);
     }
   };
 
@@ -85,16 +88,11 @@ export default function Home() {
               </span>
             </p>
 
-            {/* Chatbase Inline Chat Interface */}
+            {/* Chatbase Custom Chat Interface */}
             <div className="max-w-3xl mx-auto">
-              <iframe
-                ref={iframeRef}
-                src="https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC"
-                width="100%"
-                style={{ height: '400px', minHeight: '400px' }}
-                frameBorder="0"
-                className="rounded-xl shadow-lg border border-slate-200/60"
-              ></iframe>
+              <div style={{ height: '450px' }}>
+                <ChatbaseChat onQuestionClick={handleQuestionClick} />
+              </div>
 
               {/* Trust indicators below chat */}
               <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
@@ -117,15 +115,15 @@ export default function Home() {
                 <div className="space-y-3 text-muted-foreground">
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">1.</span>
-                    <span>Type your question in the chat above or click a suggested question below</span>
+                    <span>Click a suggested question below or type your own question in the chat</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">2.</span>
-                    <span>Ask about credit cards, rewards, travel perks, or any questions you have</span>
+                    <span>Our AI analyzes your needs and searches through hundreds of credit cards</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">3.</span>
-                    <span>Get instant AI-powered recommendations tailored to your needs</span>
+                    <span>Get instant personalized recommendations with detailed comparisons</span>
                   </p>
                 </div>
               </div>
@@ -137,17 +135,10 @@ export default function Home() {
         <section className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
             <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-2">Popular Questions</h3>
-            <p className="text-sm text-muted-foreground">Click a question to get started</p>
+            <p className="text-sm text-muted-foreground">Click any question to instantly send it to the chatbot</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {[
-              "What's the best card for travel?",
-              "How can I earn cash back on everyday purchases?",
-              "Show the best cards with no annual fee",
-              "Recommend luxury travel credit cards",
-              "What are the best cards for beginners?",
-              "Which cards offer the best welcome bonuses?"
-            ].map((question, index) => (
+            {suggestedQuestions.map((question, index) => (
               <div
                 key={index}
                 onClick={() => handleQuestionClick(question)}
