@@ -1,9 +1,23 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Sparkles, CreditCard } from 'lucide-react';
 
 export default function Home() {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const handleQuestionClick = (question: string) => {
+    // Send message to Chatbase iframe to populate the input
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      iframeRef.current.contentWindow.postMessage(
+        {
+          type: 'chatbase-send-message',
+          message: question
+        },
+        'https://www.chatbase.co'
+      );
+    }
+  };
 
   return (
     <div className="relative bg-background min-h-screen overflow-hidden">
@@ -74,9 +88,10 @@ export default function Home() {
             {/* Chatbase Inline Chat Interface */}
             <div className="max-w-3xl mx-auto">
               <iframe
+                ref={iframeRef}
                 src="https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC"
                 width="100%"
-                style={{ height: '600px', minHeight: '600px' }}
+                style={{ height: '400px', minHeight: '400px' }}
                 frameBorder="0"
                 className="rounded-xl shadow-lg border border-slate-200/60"
               ></iframe>
@@ -102,7 +117,7 @@ export default function Home() {
                 <div className="space-y-3 text-muted-foreground">
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">1.</span>
-                    <span>Type your question in the chat interface above</span>
+                    <span>Type your question in the chat above or click a suggested question below</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">2.</span>
@@ -122,7 +137,7 @@ export default function Home() {
         <section className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
             <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-2">Popular Questions</h3>
-            <p className="text-sm text-muted-foreground">Try asking about these topics</p>
+            <p className="text-sm text-muted-foreground">Click a question to get started</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {[
@@ -133,7 +148,11 @@ export default function Home() {
               "What are the best cards for beginners?",
               "Which cards offer the best welcome bonuses?"
             ].map((question, index) => (
-              <div key={index} className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-slate-200/40 hover:border-primary/40 transition-colors">
+              <div
+                key={index}
+                onClick={() => handleQuestionClick(question)}
+                className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-slate-200/40 hover:border-primary/40 hover:bg-white/80 transition-all cursor-pointer active:scale-95"
+              >
                 <p className="text-sm text-foreground">{question}</p>
               </div>
             ))}
