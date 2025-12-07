@@ -27,6 +27,19 @@ export default function Home() {
     script.setAttribute('chatbotId', 'blWn0Ze_4p-kS6ibfiQWC');
     script.setAttribute('domain', 'www.chatbase.co');
     script.defer = true;
+
+    // Auto-open the chatbot after it loads
+    script.onload = () => {
+      // Wait a bit for the chatbot to initialize, then open it
+      setTimeout(() => {
+        // Find and click the chatbot button to open it
+        const chatButton = document.querySelector('[id^="chatbase-bubble-button"]') as HTMLElement;
+        if (chatButton) {
+          chatButton.click();
+        }
+      }, 500);
+    };
+
     document.body.appendChild(script);
 
     // Cleanup function to remove the script when component unmounts
@@ -105,7 +118,7 @@ export default function Home() {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
                 <Sparkles className="h-4 w-4 text-primary" strokeWidth={2} />
-                <span className="text-sm font-medium text-primary">Chat with our AI assistant below</span>
+                <span className="text-sm font-medium text-primary">AI assistant ready to help</span>
               </div>
             </div>
           </div>
@@ -121,7 +134,7 @@ export default function Home() {
                 <div className="space-y-3 text-muted-foreground">
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">1.</span>
-                    <span>Click the chat button in the bottom right corner</span>
+                    <span>The chat window will open automatically in the bottom right corner</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">2.</span>
