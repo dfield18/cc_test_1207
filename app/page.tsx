@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { Sparkles, CreditCard } from 'lucide-react';
 import ChatbaseChat from '@/components/ChatbaseChat';
 
 export default function Home() {
-  const chatRef = useRef<any>(null);
-
   // Add suggested questions as URL parameters
   const suggestedQuestions = [
     "What's the best card for travel?",
@@ -93,7 +91,7 @@ export default function Home() {
             {/* Chatbase Custom Chat Interface */}
             <div className="max-w-3xl mx-auto">
               <div style={{ height: '450px' }}>
-                <ChatbaseChat ref={chatRef} onQuestionClick={handleQuestionClick} />
+                <ChatbaseChat onQuestionClick={handleQuestionClick} />
               </div>
 
               {/* Trust indicators below chat */}
