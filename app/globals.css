@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 15, 23, 42; /* slate-900 */
+  --background-start-rgb: 248, 250, 252; /* slate-50 */
+  --background-end-rgb: 255, 255, 255;
+  
+  /* Design System Colors - Teal/Cyan Theme */
+  --primary: 174 72% 40%;
+  --primary-light: 174 72% 50%;
+  --accent: 174 72% 40%;
+  --background: 210 40% 98%;
+  --secondary: 174 45% 95%;
+  --muted-foreground: 215 15% 50%;
+  
+  /* Gradient Variables */
+  --gradient-start: 174 72% 40%;
+  --gradient-end: 174 72% 50%;
+  --hero-gradient: linear-gradient(135deg, hsl(174 45% 95%), hsl(210 40% 98%));
+  
+  /* Shadow Variables */
+  --shadow-elegant: 0 10px 40px -10px hsl(174 72% 40% / 0.15);
+  --shadow-card: 0 4px 20px -4px hsl(220 13% 13% / 0.08);
+  
+  /* Border Radius */
+  --radius: 0.75rem;
+  
+  /* Transition Variables */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 248, 250, 252;
+    --background-start-rgb: 15, 23, 42;
+    --background-end-rgb: 15, 23, 42;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure mobile scrolling works */
+@media (max-width: 1023px) {
+  html {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    position: relative !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent any fixed height containers from blocking scroll */
+  #__next {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
+/* Typography - Apply font-heading to h1-h6 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+/* Body uses font-body class (already applied in layout.tsx) */
+
+/* Custom scrollbar styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(203, 213, 225) rgb(241, 245, 249);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  display: block;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgb(241, 245, 249); /* slate-100 */
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(203, 213, 225); /* slate-300 */
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgb(148, 163, 184); /* slate-400 */
+}
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure only left scrollbar appears for RTL containers */
+[dir="rtl"]::-webkit-scrollbar {
+  width: 8px;
+}
+
+[dir="rtl"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[dir="rtl"]::-webkit-scrollbar-thumb {
+  background: rgb(203, 213, 225);
+  border-radius: 4px;
+}
+
+/* Hide any potential right-side scrollbar */
+.scrollbar-thin[dir="rtl"] {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(203, 213, 225) transparent;
+}
+
+.scrollbar-thin[dir="rtl"]::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin[dir="rtl"]::-webkit-scrollbar-track {
+  background: rgb(241, 245, 249);
+  border-radius: 4px;
+}
+
+.scrollbar-thin[dir="rtl"]::-webkit-scrollbar-thumb {
+  background: rgb(203, 213, 225);
+  border-radius: 4px;
+}
+
+.scrollbar-thin[dir="rtl"]::-webkit-scrollbar-thumb:hover {
+  background: rgb(148, 163, 184);
+}
+
+/* Ensure first credit card link in chatbot response starts on new line on desktop */
+@media (min-width: 768px) {
+  /* Make any strong element containing a link in the first paragraph display as block */
+  .prose p:first-of-type strong:has(a) {
+    display: block;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  
+  /* Fallback: if link is directly in paragraph (not in strong), make it block */
+  .prose p:first-of-type > a:first-of-type {
+    display: block;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Small font size for credit card names on desktop */
+@media (min-width: 1024px) {
+  .card-name-desktop,
+  p.card-name-desktop,
+  h3.card-name-desktop,
+  button .card-name-desktop,
+  button p.card-name-desktop,
+  button h3.card-name-desktop {
+    font-size: 15px !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
+  }
+}
+
+
