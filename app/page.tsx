@@ -5,15 +5,27 @@ import { Sparkles, CreditCard } from 'lucide-react';
 
 export default function Home() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [chatbotSrc, setChatbotSrc] = useState('https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC');
+
+  // Add suggested questions as URL parameters
+  const suggestedQuestions = [
+    "What's the best card for travel?",
+    "How can I earn cash back on everyday purchases?",
+    "Show the best cards with no annual fee",
+    "Recommend luxury travel credit cards",
+    "What are the best cards for beginners?",
+    "Which cards offer the best welcome bonuses?"
+  ];
+
+  const chatbotSrc = `https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC`;
 
   const handleQuestionClick = (question: string) => {
-    // Scroll to chatbot
+    // Scroll to chatbot smoothly
     iframeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // Update iframe src with the question as initial message
-    const encodedQuestion = encodeURIComponent(question);
-    setChatbotSrc(`https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC?initialMessage=${encodedQuestion}`);
+    // Try to focus the iframe (this might help the user know where to type)
+    setTimeout(() => {
+      iframeRef.current?.focus();
+    }, 500);
   };
 
   return (
@@ -138,14 +150,7 @@ export default function Home() {
             <p className="text-sm text-muted-foreground">Click a question to get started</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {[
-              "What's the best card for travel?",
-              "How can I earn cash back on everyday purchases?",
-              "Show the best cards with no annual fee",
-              "Recommend luxury travel credit cards",
-              "What are the best cards for beginners?",
-              "Which cards offer the best welcome bonuses?"
-            ].map((question, index) => (
+            {suggestedQuestions.map((question, index) => (
               <div
                 key={index}
                 onClick={() => handleQuestionClick(question)}
