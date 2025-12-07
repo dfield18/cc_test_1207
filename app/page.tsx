@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Sparkles, CreditCard } from 'lucide-react';
+import ChatbaseChat from '@/components/ChatbaseChat';
 
 export default function Home() {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const chatRef = useRef<any>(null);
 
   // Add suggested questions as URL parameters
   const suggestedQuestions = [
@@ -16,16 +17,11 @@ export default function Home() {
     "Which cards offer the best welcome bonuses?"
   ];
 
-  const chatbotSrc = `https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC`;
-
   const handleQuestionClick = (question: string) => {
-    // Scroll to chatbot smoothly
-    iframeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    // Try to focus the iframe (this might help the user know where to type)
-    setTimeout(() => {
-      iframeRef.current?.focus();
-    }, 500);
+    // Call the sendMessage function exposed by the chat component
+    if ((window as any).sendChatbaseMessage) {
+      (window as any).sendChatbaseMessage(question);
+    }
   };
 
   return (
@@ -94,17 +90,11 @@ export default function Home() {
               </span>
             </p>
 
-            {/* Chatbase Inline Chat Interface */}
+            {/* Chatbase Custom Chat Interface */}
             <div className="max-w-3xl mx-auto">
-              <iframe
-                ref={iframeRef}
-                src={chatbotSrc}
-                width="100%"
-                style={{ height: '400px', minHeight: '400px' }}
-                frameBorder="0"
-                className="rounded-xl shadow-lg border border-slate-200/60"
-                key={chatbotSrc}
-              ></iframe>
+              <div style={{ height: '450px' }}>
+                <ChatbaseChat ref={chatRef} onQuestionClick={handleQuestionClick} />
+              </div>
 
               {/* Trust indicators below chat */}
               <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
@@ -127,15 +117,15 @@ export default function Home() {
                 <div className="space-y-3 text-muted-foreground">
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">1.</span>
-                    <span>Type your question in the chat above or click a suggested question below</span>
+                    <span>Click a suggested question below or type your own question in the chat</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">2.</span>
-                    <span>Ask about credit cards, rewards, travel perks, or any questions you have</span>
+                    <span>Our AI analyzes your needs and searches through hundreds of credit cards</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">3.</span>
-                    <span>Get instant AI-powered recommendations tailored to your needs</span>
+                    <span>Get instant personalized recommendations with detailed comparisons</span>
                   </p>
                 </div>
               </div>
@@ -147,7 +137,7 @@ export default function Home() {
         <section className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
             <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-2">Popular Questions</h3>
-            <p className="text-sm text-muted-foreground">Click a question to get started</p>
+            <p className="text-sm text-muted-foreground">Click any question to instantly send it to the chatbot</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {suggestedQuestions.map((question, index) => (
