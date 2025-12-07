@@ -1,22 +1,19 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Sparkles, CreditCard } from 'lucide-react';
 
 export default function Home() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [chatbotSrc, setChatbotSrc] = useState('https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC');
 
   const handleQuestionClick = (question: string) => {
-    // Send message to Chatbase iframe to populate the input
-    if (iframeRef.current && iframeRef.current.contentWindow) {
-      iframeRef.current.contentWindow.postMessage(
-        {
-          type: 'chatbase-send-message',
-          message: question
-        },
-        'https://www.chatbase.co'
-      );
-    }
+    // Scroll to chatbot
+    iframeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Update iframe src with the question as initial message
+    const encodedQuestion = encodeURIComponent(question);
+    setChatbotSrc(`https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC?initialMessage=${encodedQuestion}`);
   };
 
   return (
@@ -89,11 +86,12 @@ export default function Home() {
             <div className="max-w-3xl mx-auto">
               <iframe
                 ref={iframeRef}
-                src="https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC"
+                src={chatbotSrc}
                 width="100%"
                 style={{ height: '400px', minHeight: '400px' }}
                 frameBorder="0"
                 className="rounded-xl shadow-lg border border-slate-200/60"
+                key={chatbotSrc}
               ></iframe>
 
               {/* Trust indicators below chat */}
