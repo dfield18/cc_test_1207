@@ -1,39 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Sparkles, CreditCard } from 'lucide-react';
 
-// Extend the Window interface to include the Chatbase config
-declare global {
-  interface Window {
-    embeddedChatbotConfig: {
-      chatbotId: string;
-      domain: string;
-    };
-  }
-}
-
 export default function Home() {
-  useEffect(() => {
-    // Configure Chatbase embed
-    window.embeddedChatbotConfig = {
-      chatbotId: "blWn0Ze_4p-kS6ibfiQWC",
-      domain: "www.chatbase.co"
-    };
-
-    // Load the Chatbase script
-    const script = document.createElement('script');
-    script.src = "https://www.chatbase.co/embed.min.js";
-    script.setAttribute('chatbotId', 'blWn0Ze_4p-kS6ibfiQWC');
-    script.setAttribute('domain', 'www.chatbase.co');
-    script.defer = true;
-    document.body.appendChild(script);
-
-    // Cleanup function to remove the script when component unmounts
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   return (
     <div className="relative bg-background min-h-screen overflow-hidden">
@@ -93,7 +63,7 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="text-lg lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-tight lg:leading-relaxed mb-4 lg:mb-6">
+            <p className="text-lg lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-tight lg:leading-relaxed mb-6 lg:mb-8">
               <span className="lg:hidden">Get personalized credit card recommendations powered by AI.</span>
               <span className="hidden lg:block">
                 <span className="whitespace-nowrap block">Get personalized credit card recommendations powered by AI.</span>
@@ -101,11 +71,22 @@ export default function Home() {
               </span>
             </p>
 
-            {/* Chatbase will inject its widget here */}
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
-                <Sparkles className="h-4 w-4 text-primary" strokeWidth={2} />
-                <span className="text-sm font-medium text-primary">Chat with our AI assistant below</span>
+            {/* Chatbase Inline Chat Interface */}
+            <div className="max-w-3xl mx-auto">
+              <iframe
+                src="https://www.chatbase.co/chatbot-iframe/blWn0Ze_4p-kS6ibfiQWC"
+                width="100%"
+                style={{ height: '600px', minHeight: '600px' }}
+                frameBorder="0"
+                className="rounded-xl shadow-lg border border-slate-200/60"
+              ></iframe>
+
+              {/* Trust indicators below chat */}
+              <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  <span>Instant AI recommendations</span>
+                </div>
               </div>
             </div>
           </div>
@@ -121,7 +102,7 @@ export default function Home() {
                 <div className="space-y-3 text-muted-foreground">
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">1.</span>
-                    <span>Click the chat button in the bottom right corner</span>
+                    <span>Type your question in the chat interface above</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <span className="text-primary font-bold mt-1">2.</span>
